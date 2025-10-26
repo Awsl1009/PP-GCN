@@ -1,0 +1,52 @@
+work_dir: ./work_dir/d_gait/CTRGCN_3DPose
+
+# feeder
+feeder: feeders.feeder_CTRGCN.Feeder
+train_feeder_args:
+  data_path: /root/DGait_CTRGCN/data/processed_data_train_3d/d_gait_train_3d.npz
+  sample_path: /root/DGait_CTRGCN/data/denoised_data_train_3d/dname.txt
+  split: train
+  debug: False
+  random_choose: False
+  random_shift: False
+  random_move: False
+  window_size: 64
+  normalization: False
+  random_rot: False
+  p_interval: [0.5, 1]
+  vel: False
+  bone: False
+
+test_feeder_args:
+  data_path: /root/DGait_CTRGCN/data/processed_data_test_3d/d_gait_test_3d.npz
+  sample_path: /root/DGait_CTRGCN/data/denoised_data_test_3d/dname.txt
+  split: test
+  window_size: 64
+  p_interval: [0.95]
+  vel: False
+  bone: False
+  debug: False
+
+# model
+model: model.ctrgcn.Model
+model_args:
+  num_class: 2
+  num_point: 17
+  num_person: 1
+  graph: graph.d_gait_d.Graph
+  graph_args:
+    labeling_mode: 'spatial'
+
+#optim
+weight_decay: 0.0005
+base_lr: 1
+lr_decay_rate: 0.1
+step: [35, 55]
+warm_up_epoch: 5
+
+# training
+device: [0]
+batch_size: 128
+test_batch_size: 256
+num_epoch: 100
+nesterov: True
